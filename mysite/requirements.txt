@@ -1,0 +1,11 @@
+asgiref==3.8.1
+django==5.0.7
+djangorestframework-simplejwt==5.3.1
+djangorestframework==3.15.2
+pyjwt==2.8.0
+python-dotenv==1.0.1
+sqlparse==0.5.1
+typing-extensions==4.12.2
+tzdata==2024.1
+sendgrid==6.9.1
+stripe==10.6.0

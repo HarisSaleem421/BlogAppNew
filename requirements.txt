@@ -25,3 +25,4 @@ typing-extensions==4.12.2 ; python_version >= "3.10" and python_version < "3.11"
 tzdata==2024.1 ; python_version >= "3.10" and python_version < "4.0" and sys_platform == "win32" \
     --hash=sha256:2674120f8d891909751c38abcdfd386ac0a5a1127954fbc332af6b5ceae07efd \
     --hash=sha256:9068bc196136463f5245e51efda838afa15aaeca9903f49050dfa2679db4d252
+sendgrid==6.11.0

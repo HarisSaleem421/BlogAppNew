@@ -1,0 +1,7 @@
+*.sqlite3
+venv/
+mysite/__pycache__/
+*.pyc
+staticfiles
+blog/__pycache__
+.env

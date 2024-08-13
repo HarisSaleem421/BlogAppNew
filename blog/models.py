@@ -67,4 +67,22 @@ class Author(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self) -> str:
         return self.email
-    
+
+class StripeCustomer(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete= models.CASCADE)
+    stripe_customer_id = models.CharField(max_length= 255, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name}"
+
+class StripeSubscription(models.Model):
+    customer = models.ForeignKey(StripeCustomer, on_delete=models.CASCADE)
+    stripe_subscription_id = models.CharField(max_length=255, unique=True)
+    status = models.CharField(max_length=50)
+    plan = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    current_period_end = models.DateTimeField()
+
+    def __str__(self):
+        return f"{self.customer.user.first_name} {self.customer.user.last_name} {self.stripe_subscription_id}"

@@ -41,7 +41,14 @@ urlpatterns = [
     path('all_users/', views.all_users),
     path('loggedin_user/', views.loggedin_user),
     path('password_reset/', views.password_reset_request),
-    path('password_reset_confirm/', views.password_reset_confirm)
+    path('password_reset_confirm/', views.password_reset_confirm),
+    #stripe urls
+    path('register/customer/', views.register_customer),
+    path('subscription/create/', views.create_subscription),
+    path('create_payment_method/', views.create_payment_method),
+    path('subscription/update/', views.update_subscription),
+    path('subscription/retrieve/<str:subscription_id>/', views.retrieve_subscription),
+    path('list/subscriptions/', views.list_subscriptions),
+    path('subscription/cancel/', views.cancel_subscription),
+    path('subscription/resume/', views.resume_subscription),
 ]
-
-

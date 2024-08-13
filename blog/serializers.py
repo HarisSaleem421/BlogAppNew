@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Post, Author
+from .models import Post, Author, StripeCustomer, StripeSubscription
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
@@ -78,3 +78,24 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
         user.save()
 
 
+class StripeCustomerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StripeCustomer
+        fields = ['user', 'stripe_customer_id', 'created_at']
+
+class StripeSubscriptionSerializer(serializers.ModelSerializer):
+
+    plan_name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = StripeSubscription
+        fields = ['customer', 'stripe_subscription_id', 'status', 'plan','plan_name', 'created_at', 'current_period_end']
+
+    def get_plan_name(self, obj):
+        plan_id = obj.plan
+        if plan_id == "price_1PlV7fE8m3oia4xi6IAJxARU":
+            return "5 Dollars Per Month"
+        elif plan_id == "price_1PlVSxE8m3oia4xi8007EBw6":
+            return "12 Dollars After 3 months"
+        else:
+            return "Unknown Plan"

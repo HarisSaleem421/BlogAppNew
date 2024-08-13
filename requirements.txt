@@ -9,3 +9,4 @@ typing-extensions==4.12.2
 tzdata==2024.1 ; sys_platform == "win32"
 sendgrid==6.11.0
 stripe==10.7.0
+whitenoise==6.7.0

@@ -9,7 +9,6 @@ from django.shortcuts import get_object_or_404
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail 
 from django.conf import settings
-from django.contrib.auth import logout as author_logout , authenticate
 import os 
 from django.core.mail import send_mail
 import stripe
@@ -24,14 +23,14 @@ def post_list_get(request):
 
 @api_view(['POST'])
 def new_post(request):
-    if request.user.id != post.author.id:
-            return Response({"message": "You do not have permission to post by this Author."}, status=status.HTTP_403_FORBIDDEN)
-    serializer = PostSerializer(data= request.data)
+    serializer = PostSerializer(data=request.data)
     if serializer.is_valid():
+        if request.user.id != serializer.validated_data['author'].id:
+            return Response({"message": "You do not have permission to post by this Author."}, 
+                            status=status.HTTP_403_FORBIDDEN)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    else:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET','PATCH','DELETE'])
@@ -125,56 +124,6 @@ def password_reset_confirm(request):
         serializer.save()
         return Response({"message" : "Password has been Reset Sussessfully"}, status= status.HTTP_200_OK)
     return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
-
-# @api_view(['POST'])
-# def logout_user(request):
-#     try:
-#         refresh_token = request.data.get("refresh")
-#         if refresh_token:
-#             token = RefreshToken(refresh_token)
-#             # token.delete()
-#             token.blacklist()
-#         author_logout(request)
-
-#         return Response({"message" : "Logged Out Successfully"}, status=status.HTTP_200_OK)
-#     except Exception as e:
-#         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST) 
-
-# @api_view(['POST'])  
-# def logout_user(request, format=None):
-#     print('token>>>>>>>>>>>>>>>>...', request.user.token.refresh_token['access_token'])
-#     request.user.auth_token.delete()
-#     return Response({"message" : "Logged Out Successfully"}, status=status.HTTP_200_OK)
-
-# @api_view(['POST'])  
-# def logout_user(request):
-#     try:
-#         refresh_token = request.data["refresh_token"]
-#         print("got refresh_token")
-#         if not refresh_token:
-#             return Response({"error": "Refresh token is required"}, status=status.HTTP_400_BAD_REQUEST)
-#         print("got refresh_token")
-#         token = RefreshToken(refresh_token)
-#         token.blacklist()
-
-#         return Response({"message" : "Logged Out Successfully"},status=status.HTTP_205_RESET_CONTENT)
-#     except Exception as e:
-#         return Response({"exception error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-# class LogoutView(APIView):
-#     permission_classes = (IsAuthenticated,)
-
-#     def post(self, request):
-#         try:
-#             print("in try block")
-#             refresh_token = request.data["refresh_token"]
-#             print("after getting refresh token")
-#             token = RefreshToken(refresh_token)
-#             token.blacklist()
-
-#             return Response(status=status.HTTP_205_RESET_CONTENT)
-#         except Exception as e:
-#             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def register_customer(request):

@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['3.25.228.97']
+ALLOWED_HOSTS = ['3.25.228.97', '127.0.0.1']
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
@@ -67,8 +67,6 @@ SIMPLE_JWT = {
 
 load_dotenv()  
 
-SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
-
 import stripe
 
 stripe.api_key = os.getenv('STRIPE_SECRET_KEY')
@@ -81,7 +79,7 @@ EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'apikey'  # This is the literal string 'apikey'
-EMAIL_HOST_PASSWORD = SENDGRID_API_KEY  # This should be the actual SendGrid API key
+EMAIL_HOST_PASSWORD = os.getenv('SENDGRID_API_KEY')  # This should be the actual SendGrid API key
 
 # Application definition
 
